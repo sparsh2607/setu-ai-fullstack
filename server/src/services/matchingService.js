@@ -51,12 +51,21 @@ function semanticScore(scheme, profile) {
   const aliases = [
     ['kisan', ['farmer', 'agriculture', 'crop', 'land', 'fasal']],
     ['farmer', ['kisan', 'agriculture', 'crop', 'land', 'fasal']],
-    ['mazdoor', ['worker', 'daily-wage', 'shram', 'labour']],
-    ['student', ['scholarship', 'education', 'college', 'school']],
-    ['women', ['female', 'girl', 'mahila']],
-    ['ghar', ['housing', 'house', 'awaas']],
-    ['health', ['hospital', 'insurance', 'ayushman']],
-    ['loan', ['credit', 'working capital', 'svanidhi']],
+    ['mazdoor', ['worker', 'daily-wage', 'shram', 'labour', 'employment']],
+    ['labour', ['worker', 'daily-wage', 'shram', 'mazdoor', 'e-shram']],
+    ['student', ['scholarship', 'education', 'college', 'school', 'fee']],
+    ['college', ['student', 'scholarship', 'education', 'fee']],
+    ['women', ['female', 'girl', 'mahila', 'ujjwala']],
+    ['mahila', ['women', 'female', 'girl', 'ujjwala']],
+    ['girl', ['female', 'sukanya', 'education', 'savings']],
+    ['senior', ['old age', 'pension', 'elderly', 'retirement']],
+    ['elderly', ['senior citizen', 'old age', 'pension', 'retirement']],
+    ['disabled', ['disability', 'divyang', 'scholarship', 'support']],
+    ['divyang', ['disability', 'disabled', 'scholarship', 'support']],
+    ['ghar', ['housing', 'house', 'awaas', 'home']],
+    ['health', ['hospital', 'insurance', 'ayushman', 'medical']],
+    ['loan', ['credit', 'working capital', 'svanidhi', 'mudra', 'business']],
+    ['business', ['loan', 'mudra', 'entrepreneur', 'self employed', 'startup']],
   ]
 
   for (const [token, related] of aliases) {
