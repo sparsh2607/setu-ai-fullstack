@@ -33,7 +33,7 @@ export default function ResultsPage() {
   return (
     <AppShell
       title="Your scheme matches"
-      subtitle="Backend ne profile ko hard filters + semantic scoring se process karke top schemes return ki hain."
+      subtitle="Backend ne aapki profile, state, income, occupation aur life situation ke hisab se eligible government schemes return ki hain."
       action={<button onClick={recheck} className="inline-flex items-center gap-2 rounded-full bg-ink text-white px-4 py-2 text-sm font-bold"><RefreshCw size={16} /> Re-check</button>}
     >
       {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}

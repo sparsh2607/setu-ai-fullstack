@@ -27,13 +27,13 @@ export default function Features() {
             </div>
             <h3 className="font-display text-2xl font-medium mb-2.5">Personalized matching</h3>
             <p className="text-inkSoft text-[0.92rem] leading-relaxed max-w-lg">
-              Hard filters catch the non-negotiables. Semantic RAG understands what a rigid form never could —
-              "I help my father farm" gets you agricultural schemes, not a dead end.
+              Hard filters catch the non-negotiables. Semantic RAG understands real life situations —
+              student, worker, senior citizen, vendor or farmer — and maps them to relevant schemes.
             </p>
             <div className="flex items-center gap-3.5 mt-7 flex-wrap">
-              <div className="font-mono text-xs px-3.5 py-2 rounded-lg bg-paperAlt text-inkSoft border border-hairline">"my father is a small farmer"</div>
+              <div className="font-mono text-xs px-3.5 py-2 rounded-lg bg-paperAlt text-inkSoft border border-hairline">"I am a student with low family income"</div>
               <ArrowRight size={18} className="text-teal shrink-0" />
-              <div className="font-mono text-xs px-3.5 py-2 rounded-lg bg-teal-soft text-teal-deep font-semibold border border-teal/20">PM Kisan · 94% match</div>
+              <div className="font-mono text-xs px-3.5 py-2 rounded-lg bg-teal-soft text-teal-deep font-semibold border border-teal/20">Scholarship · 94% match</div>
             </div>
           </TiltCard>
         </Reveal>
@@ -67,9 +67,9 @@ export default function Features() {
             <h3 className="font-display text-xl font-medium mb-2.5">Lives on WhatsApp</h3>
             <p className="text-inkSoft text-[0.92rem] leading-relaxed mb-5">Zero app download. Message in Hinglish, get real matches back in seconds.</p>
             <div className="flex flex-col gap-2 max-w-sm">
-              <div className="self-end bg-[#DCF8C6] text-[#1a2e1a] text-sm px-3.5 py-2.5 rounded-2xl rounded-br-md">मैं किसान हूं, UP में जमीन है</div>
+              <div className="self-end bg-[#DCF8C6] text-[#1a2e1a] text-sm px-3.5 py-2.5 rounded-2xl rounded-br-md">Mujhe padhai aur health support chahiye</div>
               <div className="bg-white border border-hairline text-sm px-3.5 py-2.5 rounded-2xl rounded-bl-md">
-                <b>3 matches found</b><br />PM-Kisan · PMFBY · Soil Health Card<br />
+                <b>3 matches found</b><br />Scholarship · Ayushman Bharat · Housing Support<br />
                 <span className="text-teal-deep font-semibold text-xs">View full details →</span>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function Features() {
               <Wifi size={22} />
             </div>
             <h3 className="font-display text-xl font-medium mb-2.5">Works offline</h3>
-            <p className="text-inkSoft text-[0.92rem] leading-relaxed">PWA-installable. Previously matched results stay visible on poor or intermittent rural connections.</p>
+            <p className="text-inkSoft text-[0.92rem] leading-relaxed">PWA-installable. Previously matched results stay visible even on poor or intermittent connections.</p>
           </TiltCard>
         </Reveal>
 

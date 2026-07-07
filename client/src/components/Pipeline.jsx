@@ -11,7 +11,7 @@ const steps = [
   },
   {
     num: '02', icon: Waypoints, tone: 'amber', title: 'Semantic retrieval',
-    desc: 'Free text like "my father is a small farmer" becomes a vector, matched via $vectorSearch against surviving schemes.',
+    desc: 'Free text like "I am a student and my family income is low" becomes a vector, matched via $vectorSearch against eligible schemes.',
     tag: 'Atlas Vector Search · cosine similarity',
   },
   {

@@ -102,10 +102,10 @@ export default function DashboardPreview() {
                 </div>
               ))}
               <div className="mt-auto flex items-center gap-2.5 p-3 rounded-xl bg-paperAlt">
-                <div className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-teal to-amber text-white text-xs font-bold flex items-center justify-center shrink-0">RK</div>
+                <div className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-teal to-amber text-white text-xs font-bold flex items-center justify-center shrink-0">AS</div>
                 <div>
-                  <div className="text-xs font-bold">Rekha K.</div>
-                  <div className="text-[0.68rem] text-inkFaint">Bihar · Verified</div>
+                  <div className="text-xs font-bold">Asha S.</div>
+                  <div className="text-[0.68rem] text-inkFaint">Delhi · Verified</div>
                 </div>
               </div>
             </aside>
@@ -114,7 +114,7 @@ export default function DashboardPreview() {
             <main className="p-7 md:p-8 overflow-hidden">
               <div className="flex justify-between items-start mb-5.5 gap-4">
                 <div>
-                  <h4 className="font-display text-2xl font-medium mb-1">Welcome back, Rekha</h4>
+                  <h4 className="font-display text-2xl font-medium mb-1">Welcome back, Asha</h4>
                   <p className="text-sm text-inkFaint">3 new matches since your profile update</p>
                 </div>
                 <button className="bg-ink text-white px-4.5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-teal-deep hover:-translate-y-0.5 transition-all">+ Re-check</button>
@@ -127,7 +127,7 @@ export default function DashboardPreview() {
                 <span className="text-xl">✨</span>
                 <div>
                   <b className="text-sm block">You're now eligible for 2 new schemes</b>
-                  <span className="text-xs text-inkFaint">Triggered by profile update: occupation → self-employed</span>
+                  <span className="text-xs text-inkFaint">Triggered by profile update: education → college</span>
                 </div>
               </motion.div>
 
@@ -137,8 +137,8 @@ export default function DashboardPreview() {
                     <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#16A34A]">94% match</span>
                     <span className="text-[0.68rem] text-inkFaint">✓ Verified 3d ago</span>
                   </div>
-                  <h5 className="font-display text-base font-medium mb-2">PM Kisan Samman Nidhi</h5>
-                  <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Land-owning farmer status &amp; Bihar residency satisfy eligibility.</p>
+                  <h5 className="font-display text-base font-medium mb-2">National Scholarship Portal</h5>
+                  <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Student status, income range and state details satisfy eligibility.</p>
                   <MatchBar pct={94} color="linear-gradient(90deg,#0D9488,#0B7A70)" inView={inView} delay={0.3} />
                 </div>
 
@@ -147,8 +147,8 @@ export default function DashboardPreview() {
                     <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-soft text-amber-deep">68% match</span>
                     <span className="text-[0.68rem] text-inkFaint">✓ Verified 1w ago</span>
                   </div>
-                  <h5 className="font-display text-base font-medium mb-2">Soil Health Card Scheme</h5>
-                  <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Agricultural occupation confirmed; land-size documentation pending.</p>
+                  <h5 className="font-display text-base font-medium mb-2">Ayushman Bharat PM-JAY</h5>
+                  <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Low-income household details match; final document verification pending.</p>
                   <MatchBar pct={68} color="linear-gradient(90deg,#F59E0B,#D97E06)" inView={inView} delay={0.4} />
                 </div>
               </div>

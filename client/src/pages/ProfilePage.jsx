@@ -4,18 +4,18 @@ import { api } from '../services/api'
 import { saveMatches, saveProfile } from '../utils/storage'
 
 const initial = {
-  name: 'Rekha Kumari',
+  name: 'Asha Sharma',
   phone: '9999999999',
-  age: 36,
+  age: 20,
   gender: 'female',
-  state: 'BIHAR',
-  district: 'Patna',
-  annualIncome: 180000,
-  occupation: 'farmer',
-  education: 'secondary',
+  state: 'DELHI',
+  district: 'New Delhi',
+  annualIncome: 120000,
+  occupation: 'student',
+  education: 'college',
   disability: false,
   language: 'hinglish',
-  freeText: 'I help my family in farming and want support for agriculture, health and housing.',
+  freeText: 'I am a college student from a low-income family and want support for education, health and housing.',
 }
 
 export default function ProfilePage() {
@@ -46,7 +46,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <AppShell title="Build your eligibility profile" subtitle="Ye same data backend ke /match endpoint par jayega: hard filters + semantic matching + grounded explanation.">
+    <AppShell title="Build your eligibility profile" subtitle="Apni details daalo. Backend eligibility rules, state, income, occupation and free text ke hisab se matching government schemes dikhayega.">
       <form onSubmit={submit} className="grid md:grid-cols-2 gap-5">
         <Input label="Name" value={form.name} onChange={(v) => setField('name', v)} />
         <Input label="Phone / WhatsApp" value={form.phone} onChange={(v) => setField('phone', v)} />
@@ -55,7 +55,7 @@ export default function ProfilePage() {
         <Select label="State" value={form.state} onChange={(v) => setField('state', v)} options={[['BIHAR','Bihar'], ['UTTAR PRADESH','Uttar Pradesh'], ['DELHI','Delhi'], ['RAJASTHAN','Rajasthan'], ['MAHARASHTRA','Maharashtra']]} />
         <Input label="District" value={form.district} onChange={(v) => setField('district', v)} />
         <Input label="Annual Income" type="number" value={form.annualIncome} onChange={(v) => setField('annualIncome', v)} />
-        <Select label="Occupation" value={form.occupation} onChange={(v) => setField('occupation', v)} options={[['farmer','Farmer'], ['student','Student'], ['daily-wage','Daily wage worker'], ['street-vendor','Street vendor'], ['self-employed','Self employed'], ['artisan','Artisan'], ['unemployed','Unemployed']]} />
+        <Select label="Occupation" value={form.occupation} onChange={(v) => setField('occupation', v)} options={[['student','Student'], ['daily-wage','Daily wage worker'], ['street-vendor','Street vendor'], ['self-employed','Self employed'], ['artisan','Artisan'], ['unemployed','Unemployed'], ['farmer','Farmer']]} />
         <Select label="Education" value={form.education} onChange={(v) => setField('education', v)} options={[['none','None'], ['primary','Primary'], ['secondary','Secondary'], ['college','College'], ['graduate','Graduate']]} />
         <Select label="Language" value={form.language} onChange={(v) => setField('language', v)} options={[['hinglish','Hinglish'], ['hindi','Hindi'], ['english','English']]} />
         <label className="md:col-span-2 flex items-center gap-3 p-4 rounded-2xl bg-paperAlt border border-hairline font-semibold">

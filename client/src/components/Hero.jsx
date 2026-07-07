@@ -110,7 +110,7 @@ export default function Hero() {
               <Sparkles size={13} className="text-amber" /> Why you match
             </div>
             <p className="text-[0.72rem] text-inkSoft leading-snug">
-              Age 61+ &amp; state = Bihar satisfy <b className="text-teal-deep">PM-SYM</b> eligibility.
+              Age, state and income details satisfy <b className="text-teal-deep">scheme</b> eligibility.
             </p>
           </FloatCard>
 
@@ -118,7 +118,7 @@ export default function Hero() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3.5a8.4 8.4 0 00-7.15 12.8L4 20.5l4.3-1.13A8.4 8.4 0 1012 3.5z" stroke="#0D9488" strokeWidth="1.6" /></svg>
             <div>
               <div className="text-[0.74rem] font-bold">Matched via WhatsApp</div>
-              <div className="text-[0.68rem] text-inkFaint">"मैं किसान हूं, UP में..."</div>
+              <div className="text-[0.68rem] text-inkFaint">"Mujhe scholarship aur health support chahiye"</div>
             </div>
           </FloatCard>
 
