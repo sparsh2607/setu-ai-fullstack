@@ -5,6 +5,7 @@ import BridgeScene from './BridgeScene'
 import Counter from './Counter'
 import { MagneticButton } from './MagneticButton'
 import Reveal from './Reveal'
+import { goToEligibilityFlow } from '../utils/navigation'
 
 const words = ['welfare', 'schemes', 'benefits', 'support']
 
@@ -75,7 +76,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal custom={3} className="flex gap-3.5 flex-wrap mb-12">
-            <MagneticButton variant="primary" onClick={() => { window.location.href = '/consent' }}>Find my schemes</MagneticButton>
+            <MagneticButton variant="primary" onClick={() => goToEligibilityFlow('home') }>Find my schemes</MagneticButton>
             <MagneticButton variant="outline" icon={false}>
               <span className="flex items-center gap-2">
                 <Play size={16} fill="currentColor" /> Watch 90-sec demo

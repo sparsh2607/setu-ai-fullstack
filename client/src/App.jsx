@@ -5,6 +5,7 @@ import ResultsPage from './pages/ResultsPage'
 import SchemeDetailPage from './pages/SchemeDetailPage'
 import DraftPage from './pages/DraftPage'
 import SettingsPage from './pages/SettingsPage'
+import DashboardPage from './pages/DashboardPage'
 
 export default function App() {
   const path = window.location.pathname
@@ -12,6 +13,7 @@ export default function App() {
   if (path === '/consent') return <ConsentPage />
   if (path === '/profile') return <ProfilePage />
   if (path === '/results') return <ResultsPage />
+  if (path === '/dashboard') return <DashboardPage />
   if (path === '/settings') return <SettingsPage />
   if (path.startsWith('/schemes/')) return <SchemeDetailPage id={path.split('/').pop()} />
   if (path.startsWith('/draft/')) return <DraftPage id={path.split('/').pop()} />

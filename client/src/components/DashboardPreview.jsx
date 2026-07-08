@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion'
 import { LayoutGrid, User, Sparkles, FileText, MessageCircle, ShieldCheck, Sparkle } from 'lucide-react'
 import Reveal from './Reveal'
+import { loadProfile, loadMatches } from '../utils/storage'
 
 const barData = [88, 95, 72, 91, 98, 64, 89, 93, 97, 81]
 
@@ -59,6 +60,57 @@ export default function DashboardPreview() {
   }
   const reset = () => { x.set(0); y.set(0) }
 
+  const [profile, setProfile] = useState(() => loadProfile())
+  const [matches, setMatches] = useState(() => loadMatches())
+
+  useEffect(() => {
+    function syncPreviewData() {
+      setProfile(loadProfile())
+      setMatches(loadMatches())
+    }
+
+    syncPreviewData()
+    window.addEventListener('focus', syncPreviewData)
+    window.addEventListener('storage', syncPreviewData)
+
+    return () => {
+      window.removeEventListener('focus', syncPreviewData)
+      window.removeEventListener('storage', syncPreviewData)
+    }
+  }, [])
+
+  const hasProfile = Object.keys(profile || {}).length > 0
+  const fullName = hasProfile ? profile.name || 'User' : 'Asha Sharma'
+  const firstName = fullName.split(' ')[0]
+  const initials = fullName
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+
+  const matchCount = hasProfile ? matches.length || 0 : 3
+  const topMatch = matches?.[0]
+  const secondMatch = matches?.[1]
+
+  const firstScheme = topMatch?.scheme?.name || 'National Scholarship Portal'
+  const firstScore = topMatch?.score || 94
+  const firstWhy =
+    topMatch?.explanation?.text ||
+    '{firstWhy}'
+
+  const secondScheme = secondMatch?.scheme?.name || 'Ayushman Bharat PM-JAY'
+  const secondScore = secondMatch?.score || 68
+  const secondWhy =
+    secondMatch?.explanation?.text ||
+    '{secondWhy}'
+
+  const firstTheme = getScoreTheme(firstScore)
+  const secondTheme = getScoreTheme(secondScore)
+  const profileTrigger = hasProfile
+    ? `${profile.occupation || 'profile'} → ${profile.education || profile.familyType || 'eligibility'}`
+    : 'education → college'
+
   return (
     <section id="dashboard" className="py-28 md:py-32 px-5 md:px-14 bg-paperAlt rounded-[48px] mx-2 md:mx-6 overflow-hidden">
       <div className="max-w-[720px] mx-auto text-center mb-16 md:mb-20">
@@ -102,10 +154,10 @@ export default function DashboardPreview() {
                 </div>
               ))}
               <div className="mt-auto flex items-center gap-2.5 p-3 rounded-xl bg-paperAlt">
-                <div className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-teal to-amber text-white text-xs font-bold flex items-center justify-center shrink-0">AS</div>
+                <div className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-teal to-amber text-white text-xs font-bold flex items-center justify-center shrink-0">{initials || 'AS'}</div>
                 <div>
-                  <div className="text-xs font-bold">Asha S.</div>
-                  <div className="text-[0.68rem] text-inkFaint">Delhi · Verified</div>
+                  <div className="text-xs font-bold">{firstName}</div>
+                  <div className="text-[0.68rem] text-inkFaint">{profile.state || 'India'} · Verified</div>
                 </div>
               </div>
             </aside>
@@ -114,8 +166,8 @@ export default function DashboardPreview() {
             <main className="p-7 md:p-8 overflow-hidden">
               <div className="flex justify-between items-start mb-5.5 gap-4">
                 <div>
-                  <h4 className="font-display text-2xl font-medium mb-1">Welcome back, Asha</h4>
-                  <p className="text-sm text-inkFaint">3 new matches since your profile update</p>
+                  <h4 className="font-display text-2xl font-medium mb-1">Welcome back, {firstName}</h4>
+                  <p className="text-sm text-inkFaint">{hasProfile? `${matchCount} scheme matches based on your profile`: '3 new matches since your profile update'}</p>
                 </div>
                 <button className="bg-ink text-white px-4.5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-teal-deep hover:-translate-y-0.5 transition-all">+ Re-check</button>
               </div>
@@ -126,30 +178,32 @@ export default function DashboardPreview() {
               >
                 <span className="text-xl">✨</span>
                 <div>
-                  <b className="text-sm block">You're now eligible for 2 new schemes</b>
-                  <span className="text-xs text-inkFaint">Triggered by profile update: education → college</span>
+                  <b className="text-sm block">You're eligible for {matchCount || 0} government schemes</b>
+                  <span className="text-xs text-inkFaint">Triggered by profile update: {profileTrigger}</span>
                 </div>
               </motion.div>
 
               <div className="grid sm:grid-cols-2 gap-4 mb-5.5">
                 <div className="bg-white border border-hairline rounded-2xl p-4.5 hover:-translate-y-1 hover:shadow-md2 transition-all">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#16A34A]">94% match</span>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${firstTheme.badge}`}>
+                      {firstScore}% match
+                    </span>
                     <span className="text-[0.68rem] text-inkFaint">✓ Verified 3d ago</span>
                   </div>
-                  <h5 className="font-display text-base font-medium mb-2">National Scholarship Portal</h5>
+                  <h5 className="font-display text-base font-medium mb-2">{firstScheme}</h5>
                   <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Student status, income range and state details satisfy eligibility.</p>
-                  <MatchBar pct={94} color="linear-gradient(90deg,#0D9488,#0B7A70)" inView={inView} delay={0.3} />
+                  <MatchBar pct={firstScore} color={firstTheme.bar} inView={inView} delay={0.3} />
                 </div>
 
                 <div className="bg-white border border-hairline rounded-2xl p-4.5 hover:-translate-y-1 hover:shadow-md2 transition-all">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-soft text-amber-deep">68% match</span>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${secondTheme.badge}`}>{secondScore}% match</span>
                     <span className="text-[0.68rem] text-inkFaint">✓ Verified 1w ago</span>
                   </div>
-                  <h5 className="font-display text-base font-medium mb-2">Ayushman Bharat PM-JAY</h5>
+                  <h5 className="font-display text-base font-medium mb-2">{secondScheme}</h5>
                   <p className="text-xs text-inkSoft leading-snug mb-3.5"><b className="text-ink">Why you match:</b> Low-income household details match; final document verification pending.</p>
-                  <MatchBar pct={68} color="linear-gradient(90deg,#F59E0B,#D97E06)" inView={inView} delay={0.4} />
+                  <MatchBar pct={secondScore} color={secondTheme.bar} inView={inView} delay={0.45} />
                 </div>
               </div>
 
@@ -168,4 +222,16 @@ export default function DashboardPreview() {
       </div>
     </section>
   )
+}
+function getScoreTheme(score) {
+  const strong = Number(score) >= 80
+
+  return {
+    badge: strong
+      ? 'bg-[#DCFCE7] text-[#15803D]'
+      : 'bg-amber-soft text-amber-deep',
+    bar: strong
+      ? 'linear-gradient(90deg,#0D9488,#0B7A70)'
+      : 'linear-gradient(90deg,#F59E0B,#D97706)',
+  }
 }

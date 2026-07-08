@@ -67,7 +67,8 @@ export default function ProfilePage() {
       const result = await api.match(matchProfile)
       saveMatches(result.data || [])
 
-      window.location.href = '/results'
+      const from = new URLSearchParams(window.location.search).get('from') || 'home'
+      window.location.href = `/results?from=${from}`
     } catch (e) {
       setError(e.message)
     } finally {

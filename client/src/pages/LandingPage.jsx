@@ -9,6 +9,7 @@ import DashboardPreview from '../components/DashboardPreview'
 import Trust from '../components/Trust'
 import FinalCTA from '../components/FinalCTA'
 import Footer from '../components/Footer'
+import WhatsAppBot from '../components/WhatsAppBot'
 
 export default function LandingPage() {
   return (
@@ -25,6 +26,7 @@ export default function LandingPage() {
         <DashboardPreview />
         <Trust />
         <FinalCTA />
+        <WhatsAppBot />
       </main>
       <Footer />
     </div>

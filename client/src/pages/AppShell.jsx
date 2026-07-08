@@ -1,15 +1,20 @@
 import { ArrowLeft } from 'lucide-react'
 
 export default function AppShell({ title, subtitle, children, action }) {
+  const from = new URLSearchParams(window.location.search).get('from') || 'home'
+  const backHref = from === 'dashboard' ? '/dashboard' : '/'
+  const backLabel = from === 'dashboard' ? 'Dashboard' : 'Home'
   return (
     <div className="min-h-screen bg-paper text-ink px-5 py-6 md:px-10">
       <div className="max-w-5xl mx-auto">
         <header className="flex items-center justify-between gap-4 mb-8">
           <button
-            onClick={() => { window.location.href = '/' }}
+            onClick={() => {
+              window.location.href = backHref
+            }}
             className="inline-flex items-center gap-2 text-sm font-semibold text-inkSoft hover:text-teal-deep"
           >
-            <ArrowLeft size={18} /> Home
+            <ArrowLeft size={18} /> {backLabel}
           </button>
           {action}
         </header>

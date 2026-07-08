@@ -74,6 +74,86 @@ function semanticScore(scheme, profile) {
 
   return Math.min(25, overlap * 5)
 }
+function hasAny(text, words) {
+  const normalizedText = normalize(text)
+  return words.some((word) => normalizedText.includes(normalize(word)))
+}
+
+function intentScore(scheme, profile) {
+  const schemeText = `${scheme.name} ${scheme.category} ${scheme.summary} ${scheme.plainLanguage} ${(scheme.tags || []).join(' ')}`
+  const needText = `
+    ${profile.freeText || ''}
+    ${profile.occupation || ''}
+    ${profile.education || ''}
+    ${profile.category || ''}
+    ${profile.area || ''}
+    ${profile.familyType || ''}
+    ${profile.gender || ''}
+    ${profile.disability ? 'disability disabled divyang' : ''}
+  `
+
+  let score = 0
+
+  const rules = [
+    {
+      userWords: ['student', 'scholarship', 'education', 'college', 'school', 'fee'],
+      schemeWords: ['student', 'scholarship', 'education', 'college', 'school', 'fee'],
+      boost: 35,
+    },
+    {
+      userWords: ['health', 'hospital', 'medical', 'insurance', 'treatment'],
+      schemeWords: ['health', 'hospital', 'medical', 'insurance', 'ayushman'],
+      boost: 35,
+    },
+    {
+      userWords: ['pension', 'senior', 'retired', 'old age', 'elderly'],
+      schemeWords: ['pension', 'senior', 'old age', 'elderly', 'retirement'],
+      boost: 35,
+    },
+    {
+      userWords: ['business', 'loan', 'startup', 'entrepreneur', 'self-employed'],
+      schemeWords: ['business', 'loan', 'mudra', 'credit', 'entrepreneur', 'startup'],
+      boost: 35,
+    },
+    {
+      userWords: ['housing', 'house', 'home', 'awaas', 'ghar'],
+      schemeWords: ['housing', 'house', 'home', 'awaas', 'pmay'],
+      boost: 35,
+    },
+    {
+      userWords: ['worker', 'daily-wage', 'labour', 'mazdoor', 'job'],
+      schemeWords: ['worker', 'labour', 'shram', 'employment', 'job', 'maandhan'],
+      boost: 35,
+    },
+    {
+      userWords: ['women', 'female', 'mahila', 'girl'],
+      schemeWords: ['women', 'female', 'mahila', 'girl', 'ujjwala', 'sukanya'],
+      boost: 25,
+    },
+    {
+      userWords: ['disability', 'disabled', 'divyang'],
+      schemeWords: ['disability', 'disabled', 'divyang'],
+      boost: 35,
+    },
+  ]
+
+  for (const rule of rules) {
+    if (hasAny(needText, rule.userWords) && hasAny(schemeText, rule.schemeWords)) {
+      score += rule.boost
+    }
+  }
+
+  if (
+    profile.occupation &&
+    scheme.occupations &&
+    !scheme.occupations.includes('ALL') &&
+    scheme.occupations.some((item) => normalize(item) === normalize(profile.occupation))
+  ) {
+    score += 15
+  }
+
+  return Math.min(45, score)
+}
 
 function explainMatch(scheme, profile, checks, score) {
   const positive = []
@@ -117,7 +197,8 @@ export async function matchSchemes(profile) {
 
     const hardScore = Object.values(checks).filter(Boolean).length * 15
     const semScore = semanticScore(scheme, profile)
-    const score = Math.min(98, hardScore + semScore)
+    const priorityScore = intentScore(scheme, profile)
+    const score = Math.min(98, hardScore + semScore + priorityScore)
     const hardFailed = !checks.age || !checks.state || !checks.income || !checks.gender
 
     return {
@@ -126,13 +207,13 @@ export async function matchSchemes(profile) {
       status: hardFailed ? 'partial' : score >= 75 ? 'strong' : 'good',
       checks,
       explanation: explainMatch(scheme, profile, checks, hardFailed ? Math.min(score, 62) : score),
-      documentChecklist: buildDocumentChecklist(scheme, profile),
+      documentChecklist: buildDocumentChecklist(scheme, profile),priorityScore,
     }
   })
 
   return results
     .filter((item) => item.score >= 45)
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score || b.priorityScore - a.priorityScore)
     .slice(0, 8)
 }
 

@@ -1,6 +1,7 @@
 import { MessageCircle } from 'lucide-react'
 import Reveal from './Reveal'
 import { MagneticButton } from './MagneticButton'
+import { goToEligibilityFlow, openWhatsAppMessage } from '../utils/navigation'
 
 export default function FinalCTA() {
   return (
@@ -14,9 +15,12 @@ export default function FinalCTA() {
         </Reveal>
         <Reveal custom={1} className="text-inkSoft text-lg mb-9">Takes under two minutes. No app to install.</Reveal>
         <Reveal custom={2} className="flex gap-3.5 justify-center flex-wrap">
-          <MagneticButton variant="primary" onClick={() => { window.location.href = '/consent' }}>Check my eligibility</MagneticButton>
-          <MagneticButton variant="outline" icon={false} onClick={() => { window.location.href = '/profile' }}>
-            <span className="flex items-center gap-2"><MessageCircle size={17} /> Message us on WhatsApp</span>
+          <MagneticButton variant="primary" onClick={() =>  goToEligibilityFlow('home') }>Check my eligibility</MagneticButton>
+          <MagneticButton variant="outline" icon={false} onClick={openWhatsAppMessage}>
+            <span className="flex items-center gap-2">
+              <MessageCircle size={18} />
+              Message us on WhatsApp
+            </span>
           </MagneticButton>
         </Reveal>
       </div>
