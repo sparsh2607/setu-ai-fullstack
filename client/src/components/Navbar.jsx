@@ -34,6 +34,16 @@ function Logo() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+
+  function confirmLogout() {
+  localStorage.removeItem('setu_profile')
+  localStorage.removeItem('setu_matches')
+  localStorage.removeItem('setu_consent')
+
+  setShowLogoutConfirm(false)
+  window.location.href = '/'
+}
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -42,9 +52,9 @@ export default function Navbar() {
   }, [])
   const [profile, setProfile] = useState({})
 
-useEffect(() => {
-  setProfile(loadProfile())
-}, [])
+  useEffect(() => {
+    setProfile(loadProfile())
+  }, [])
 
 const isSignedIn = Object.keys(profile || {}).length > 0
 
@@ -53,6 +63,7 @@ function logout() {
   localStorage.removeItem('setu_matches')
   window.location.href = '/'
 }
+
 
 function addNewProfile() {
   goToNewProfileFlow('home')
@@ -86,7 +97,7 @@ function addNewProfile() {
 
                 <button
                   data-hover-target
-                  onClick={logout}
+                  onClick={() => setShowLogoutConfirm(true)}
                   className="inline-flex items-center gap-2 px-4.5 py-2.5 text-sm font-semibold rounded-full bg-ink text-white hover:bg-teal-deep transition-colors"
                 >
                   <LogOut size={16} />
@@ -153,27 +164,71 @@ function addNewProfile() {
                 </button>
 
                 <button
-                  onClick={logout}
+                  onClick={() => setShowLogoutConfirm(true)}
                   className="w-full rounded-full bg-red-600 text-white px-5 py-3 font-bold"
                 >
                   Logout
                 </button>
               </div>
-) : (
-  <button
-    type="button"
-    onClick={() => {
-      setOpen(false)
-      goToEligibilityFlow()
-    }}
-    className="mt-6 w-full rounded-full bg-ink text-white px-5 py-3 font-bold"
-  >
-    Check eligibility
-  </button>
-)}
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  goToEligibilityFlow()
+                }}
+                className="mt-6 w-full rounded-full bg-ink text-white px-5 py-3 font-bold"
+              >
+                Check eligibility
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
+      <AnimatePresence>
+            {showLogoutConfirm && (
+              <motion.div
+                className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="w-full max-w-md rounded-[28px] bg-white p-6 shadow-2xl border border-hairline"
+                  initial={{ scale: 0.94, opacity: 0, y: 18 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.94, opacity: 0, y: 18 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <h3 className="font-display text-2xl font-medium text-ink mb-2">
+                    Logout from Setu AI?
+                  </h3>
+
+                  <p className="text-sm leading-relaxed text-inkSoft mb-6">
+                    Your current profile and saved scheme matches will be removed from this browser.
+                    Are you sure you want to continue?
+                  </p>
+
+                  <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
+                    <button
+                      onClick={() => setShowLogoutConfirm(false)}
+                      className="rounded-full border border-hairline px-5 py-3 text-sm font-semibold text-ink hover:bg-paperAlt transition-colors"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      onClick={confirmLogout}
+                      className="rounded-full bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
+                    >
+                      Yes, logout
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+        </AnimatePresence>
+
     </>
   )
 }

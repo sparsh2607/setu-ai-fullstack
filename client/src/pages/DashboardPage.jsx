@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Grid, User, Star, FileText, MessageCircle, Shield } from 'react-feather'
 import { api } from '../services/api'
 import { loadProfile, loadMatches, saveMatches } from '../utils/storage'
+import { openWhatsAppMessage } from '../utils/navigation'
 
 export default function DashboardPage() {
   const profile = loadProfile()
@@ -306,25 +307,31 @@ function DraftsPanel({ matches }) {
   )
 }
 
-function WhatsAppPanel({ onOpen, profile }) {
+function WhatsAppPanel({ profile }) {
   return (
     <div className="rounded-3xl border border-hairline bg-white p-6">
-      <h2 className="font-display text-2xl font-medium mb-3">WhatsApp assistance</h2>
+      <h2 className="font-display text-2xl font-medium mb-3">
+        WhatsApp assistance
+      </h2>
 
       <p className="text-inkSoft leading-relaxed mb-5">
-        Users can share their scheme discovery request in WhatsApp message format. For the demo, 
-        this button opens the WhatsApp share window.
+        Continue your scheme discovery through the Setu AI WhatsApp bot.
+        For demo users, join the Twilio sandbox first and then send hi.
       </p>
 
-      <div className="rounded-2xl bg-paperAlt p-4 text-sm text-inkSoft mb-5">
-        Hi Setu AI, I want to check government schemes. My occupation is{' '}
-        <b>{profile.occupation || 'not added'}</b>, state is <b>{profile.state || 'not added'}</b>,
-        and income is <b>{profile.annualIncome || 'not added'}</b>.
+      <div className="rounded-2xl bg-paperAlt px-5 py-4 text-sm text-inkSoft mb-5">
+        <p>
+          Demo note: first send{' '}
+          <span className="font-bold text-ink">join ball-military</span>{' '}
+          to{' '}
+          <span className="font-bold text-ink">+1 415 523 8886</span>, then send{' '}
+          <span className="font-bold text-ink">hi</span>.
+        </p>
       </div>
 
       <button
-        onClick={onOpen}
-        className="rounded-full bg-ink text-white px-6 py-3 font-bold"
+        onClick={openWhatsAppMessage}
+        className="rounded-full bg-ink text-white px-6 py-3 font-bold hover:bg-teal-deep transition-colors"
       >
         Open WhatsApp
       </button>

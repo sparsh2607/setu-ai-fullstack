@@ -25,20 +25,8 @@ export function goToNewProfileFlow(from = 'home') {
 }
 
 export function openWhatsAppMessage() {
-  const profile = loadProfile()
-  const matches = loadMatches()
+  const phoneNumber = '14155238886'
+  const message = encodeURIComponent('hi')
 
-  const topScheme = matches?.[0]?.scheme?.name || 'government schemes'
-
-  const text = `Hi Setu AI, I want help with government schemes.
-
-Name: ${profile.name || 'Not added'}
-State: ${profile.state || 'Not added'}
-Occupation: ${profile.occupation || 'Not added'}
-Income: ${profile.annualIncome || 'Not added'}
-Top match: ${topScheme}
-
-Please help me understand my eligibility.`
-
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+  window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
 }

@@ -23,6 +23,14 @@ export default function FinalCTA() {
             </span>
           </MagneticButton>
         </Reveal>
+        <p className="mt-4 text-xs md:text-sm text-inkFaint max-w-xl mx-auto leading-relaxed">
+          Demo note: first send{' '}
+          <span className="font-semibold text-ink">join ball-military</span>{' '}
+          to{' '}
+          <span className="font-semibold text-ink">+1 415 523 8886</span>, then send{' '}
+          <span className="font-semibold text-ink">hi</span>{' '}
+          to use the Setu AI WhatsApp bot.
+        </p>
       </div>
     </section>
   )
