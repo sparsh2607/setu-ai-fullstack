@@ -12,7 +12,7 @@ export default function DraftPage({ id }) {
 
   useEffect(() => {
     api
-      .generateDraft(id, profile)
+      .createDraft(id, profile)
       .then((r) => setData(r.data))
       .catch((e) => setError(e.message))
   }, [id])
