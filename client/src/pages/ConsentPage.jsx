@@ -2,11 +2,17 @@ import { useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import AppShell from './AppShell'
 import { api } from '../services/api'
+import { clearSetuData } from '../utils/storage'
 
 export default function ConsentPage() {
   const [accepted, setAccepted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const params = new URLSearchParams(window.location.search)
+  const from = params.get('from') || 'home'
+  const mode = params.get('mode')
+  const isNewProfile = mode === 'new-profile'
+  const cancelHref = from === 'dashboard' ? '/dashboard' : '/'
 
   async function continueNext() {
     if (!accepted) return
@@ -15,7 +21,11 @@ export default function ConsentPage() {
     try {
       await api.acceptConsent({ accepted: true })
       localStorage.setItem('setu_consent', 'true')
-      window.location.href = '/profile'
+      if (isNewProfile) {
+          clearSetuData()
+      }
+      window.location.href = `/profile?from=${from}${isNewProfile ? '&mode=new-profile' : ''}`
+
     } catch (e) {
       setError(e.message)
     } finally {
@@ -41,13 +51,32 @@ export default function ConsentPage() {
             <input className="mt-1 w-5 h-5 accent-teal" type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
             I agree to let Setu AI use my profile data for eligibility matching, application draft and document checklist generation.
           </label>
-          <button
-            onClick={continueNext}
-            disabled={!accepted || loading}
-            className="mt-5 w-full rounded-full bg-ink text-white font-bold py-3.5 disabled:opacity-40 hover:bg-teal-deep transition-colors"
-          >
-            {loading ? 'Saving...' : 'Continue to profile'}
-          </button>
+          {isNewProfile && (
+              <div className="rounded-2xl border border-amber-200 bg-amber-soft/70 p-4 mb-5 text-sm text-inkSoft">
+                You are about to create a new profile. Your current saved profile will stay safe unless you continue.
+              </div>
+            )}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {isNewProfile && (
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = cancelHref
+                }}
+                className="w-full rounded-full border border-hairline bg-white text-ink font-bold py-3.5 hover:border-teal transition-colors"
+              >
+                Cancel
+              </button>
+            )}
+
+            <button
+              onClick={continueNext}
+              disabled={!accepted || loading}
+              className="w-full rounded-full bg-ink text-white font-bold py-3.5 disabled:opacity-40 hover:bg-teal-deep transition-colors"
+            >
+              {loading ? 'Saving...' : isNewProfile ? 'Continue with new profile' : 'Continue to profile'}
+            </button>
+          </div>
         </div>
       </div>
     </AppShell>

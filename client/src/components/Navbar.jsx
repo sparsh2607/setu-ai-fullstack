@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowRight } from 'lucide-react'
+import { Menu, X, ArrowRight, LogOut, UserPlus } from 'lucide-react'
 import { MagneticButton } from './MagneticButton'
+import { loadProfile } from '../utils/storage'
+import { goToEligibilityFlow, goToSignInFlow, goToNewProfileFlow } from '../utils/navigation'
 
 const links = [
+  { href: '/', label: 'Home' },
   { href: '#pipeline', label: 'How it works' },
   { href: '#features', label: 'Features' },
-  { href: '#dashboard', label: 'Dashboard' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '#trust', label: 'Trust' },
 ]
 
@@ -37,7 +40,23 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+  const [profile, setProfile] = useState({})
 
+useEffect(() => {
+  setProfile(loadProfile())
+}, [])
+
+const isSignedIn = Object.keys(profile || {}).length > 0
+
+function logout() {
+  localStorage.removeItem('setu_profile')
+  localStorage.removeItem('setu_matches')
+  window.location.href = '/'
+}
+
+function addNewProfile() {
+  goToNewProfileFlow('home')
+}
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-[900] flex justify-center pt-4 px-4 md:px-8">
@@ -54,8 +73,47 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-2.5">
-            <button data-hover-target onClick={() => { window.location.href = '/profile' }} className="px-4.5 py-2.5 text-sm font-semibold rounded-full hover:bg-paperAlt transition-colors">Sign in</button>
-            <MagneticButton variant="primary" onClick={() => { window.location.href = '/consent' }} className="!py-3 !px-5 !text-sm">Check eligibility</MagneticButton>
+            {isSignedIn ? (
+              <>
+                <button
+                  data-hover-target
+                  onClick={addNewProfile}
+                  className="inline-flex items-center gap-2 px-4.5 py-2.5 text-sm font-semibold rounded-full border border-hairline hover:border-teal transition-colors"
+                >
+                  <UserPlus size={16} />
+                  Add new profile
+                </button>
+
+                <button
+                  data-hover-target
+                  onClick={logout}
+                  className="inline-flex items-center gap-2 px-4.5 py-2.5 text-sm font-semibold rounded-full bg-ink text-white hover:bg-teal-deep transition-colors"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  data-hover-target
+                  onClick={() => goToSignInFlow('home')}
+                  className="px-4.5 py-2.5 text-sm font-semibold rounded-full hover:bg-paperAlt transition-colors"
+                >
+                  Sign in
+                </button>
+
+                <button
+                  data-hover-target
+                  type="button"
+                  onClick={() => goToEligibilityFlow('home')}
+                  className="inline-flex items-center gap-2 rounded-full bg-ink text-white px-5 py-3 text-sm font-semibold hover:bg-teal-deep transition-colors"
+                >
+                  Check eligibility
+                  <ArrowRight size={18} />
+                </button>
+              </>
+            )}
           </div>
 
           <button className="lg:hidden p-2.5" onClick={() => setOpen(!open)} aria-label="Menu">
@@ -75,7 +133,44 @@ export default function Navbar() {
               <a key={l.href} href={l.href} onClick={() => setOpen(false)}
                  className="py-3.5 font-semibold text-lg border-b border-hairline">{l.label}</a>
             ))}
-            <MagneticButton variant="primary" onClick={() => { window.location.href = '/consent' }} className="mt-6 w-full justify-center">Check eligibility</MagneticButton>
+            {isSignedIn ? (
+              <div className="mt-6 space-y-3">
+                <button
+                  onClick={() => {
+                    setOpen(false)
+                    window.location.href = '/dashboard'
+                  }}
+                  className="w-full rounded-full bg-ink text-white px-5 py-3 font-bold"
+                >
+                  Dashboard
+                </button>
+
+                <button
+                  onClick={addNewProfile}
+                  className="w-full rounded-full border border-hairline px-5 py-3 font-bold"
+                >
+                  Add new profile
+                </button>
+
+                <button
+                  onClick={logout}
+                  className="w-full rounded-full bg-red-600 text-white px-5 py-3 font-bold"
+                >
+                  Logout
+                </button>
+              </div>
+) : (
+  <button
+    type="button"
+    onClick={() => {
+      setOpen(false)
+      goToEligibilityFlow()
+    }}
+    className="mt-6 w-full rounded-full bg-ink text-white px-5 py-3 font-bold"
+  >
+    Check eligibility
+  </button>
+)}
           </motion.div>
         )}
       </AnimatePresence>
